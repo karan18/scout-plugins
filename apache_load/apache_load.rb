@@ -13,6 +13,7 @@ class ApacheLoad < Scout::Plugin
     url = URI.parse(option("server_url"))
 		req = Net::HTTP::Get.new(url.path + "?" + url.query.to_s)
 		http = Net::HTTP.new(url.host, url.port)
+		req.basic_auth(url.user, url.password)
 		http.use_ssl = url.is_a?(URI::HTTPS)
     res = http.start() {|h|
       h.request(req)
